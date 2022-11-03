@@ -10,6 +10,7 @@ public class playerController : MonoBehaviour
     Renderer rplayer;
     private bool hasPowerup = false;
     public float powerupspeed = 10.0f;
+    public GameObject powerupinde;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,13 +33,17 @@ public class playerController : MonoBehaviour
         {
             rplayer.material.color = new Color(1.0f + forwardInput, 1.0f, 1.0f + forwardInput);
         }
+        powerupinde.transform.position = transform.position;
     }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("powerup"))
         {
+
             hasPowerup = true;
             Destroy(other.gameObject);
+            StartCoroutine(powerUpCountDown());
+            powerupinde.SetActive(true);
         }
     }
     private void OnCollisionEnter(Collision collision)
@@ -50,5 +55,12 @@ public class playerController : MonoBehaviour
             Vector3 awydir = collision.gameObject.transform.position - transform.position;
            rbEnemy.AddForce(awydir * powerupspeed, ForceMode.Impulse); 
         }
+    }
+    IEnumerator powerUpCountDown()
+    {
+        yield return new WaitForSeconds(8);
+        hasPowerup = false;
+        powerupinde.SetActive(false);
+
     }
 }
