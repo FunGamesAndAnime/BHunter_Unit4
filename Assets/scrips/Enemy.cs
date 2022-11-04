@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     GameObject player;
     
     public float speed = 4.0f;
+    private float yBoundary = -15.0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,6 +19,10 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        EnemyRB.AddForce((player.transform.position -transform.position).normalized * speed * Time.deltaTime);
+        if(transform.position.y < yBoundary)
+        {
+            Destroy(gameObject);
+        }
+        EnemyRB.AddForce((player.transform.position - transform.position).normalized * speed * Time.deltaTime);
     }
 }
